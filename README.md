@@ -8,7 +8,6 @@ This repository contains an end-to-end **R + Power BI** project that implements 
 - **Data mining and machine learning**
 - **Interactive Power BI dashboards**
 
-The project is designed to be suitable for a **20-mark academic assignment**.
 
 ---
 
