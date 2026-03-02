@@ -122,17 +122,4 @@ If your column names are different, you can either rename the columns in R or ad
 
 ---
 
-### 5. What to Include in Your 20-Mark Submission
-
-- **Abstract and introduction** (you can reuse `abstract.pdf`).
-- **Methodology**:
-  - ETL and data cleaning steps in R.
-  - Star-schema design (fact and dimension tables).
-  - OLAP analyses and key metrics.
-  - Predictive model, clustering, association rules, anomaly detection, text mining.
-- **Results**:
-  - Important plots and tables from `analytics/`.
-  - Screenshots of Power BI dashboards.
-- **Conclusion & recommendations**:
-  - How to reduce delays, optimize staffing, handle festivals/traffic, and improve customer satisfaction.
 
