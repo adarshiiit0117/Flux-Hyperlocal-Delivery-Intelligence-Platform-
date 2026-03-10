@@ -27,6 +27,7 @@ dim_time <- supply_clean %>%
     year = year(order_date),
     month = month(order_date),
     day = day(order_date),
+    year_month = format(order_date, "%Y-%m"),
     weekday = wday(order_date, label = TRUE, abbr = TRUE)
   ) %>%
   relocate(time_id)
@@ -47,16 +48,22 @@ dim_agent <- reviews_clean %>%
   mutate(agent_key = row_number()) %>%
   relocate(agent_key)
 
+# Map agents to deliveries (randomly assign for simulation if missing)
+agent_ids <- dim_agent$agent_id
+set.seed(42)
+
 fact_delivery <- supply_clean %>%
   left_join(dim_time, by = "order_date") %>%
   left_join(dim_city, by = "city") %>%
   mutate(
-    delayed_flag = if_else(delivery_time_min > sla_min, 1L, 0L)
+    delayed_flag = if_else(delivery_time_min > sla_min, 1L, 0L),
+    agent_id = sample(agent_ids, n(), replace = TRUE)
   ) %>%
   transmute(
     delivery_id = delivery_id,
     time_id = time_id,
     city_id = city_id,
+    agent_id = agent_id,
     distance_km = distance_km,
     delivery_time_min = delivery_time_min,
     sla_min = sla_min,
@@ -97,4 +104,3 @@ dbWriteTable(con, "fact_review", fact_review, overwrite = TRUE)
 dbDisconnect(con)
 
 message("Data warehouse created at: ", db_path)
-

@@ -134,3 +134,30 @@ For a 20-mark academic submission:
   - Which cities or agents are performing best/worst.
   - How customer ratings relate to operational metrics.
 
+---
+
+### 8. Recommended Kaggle Datasets for Enhancement
+
+To further improve your project with real-world data, consider downloading and integrating these datasets:
+
+1.  **India's Fast Delivery Agents (Blinkit, Zepto, etc.)**
+    - [Link to Kaggle](https://www.kaggle.com/datasets/thedevastator/india-fast-delivery-agents-reviews-and-ratings)
+    - *Use for*: Real customer sentiment and agent performance benchmarks.
+2.  **Amazon Delivery Dataset**
+    - [Link to Kaggle](https://www.kaggle.com/datasets/annavictoria/amazon-delivery-dataset)
+    - *Use for*: Analyzing weather and traffic impacts on a larger scale.
+3.  **Zomato Delivery Operations**
+    - [Link to Kaggle](https://www.kaggle.com/datasets/annavictoria/zomato-delivery-operations-analytics-dataset)
+    - *Use for*: Hyperlocal food delivery patterns.
+
+### 9. Advanced "Intelligence" Visuals
+
+To "WOW" your evaluators, add these advanced visuals in Power BI:
+
+- **Decomposition Tree**: (Visuals pane -> Decomposition Tree)
+  - Analyze "Delay" by breaking it down through City -> Weather -> Traffic Level.
+- **Key Influencers**: (Visuals pane -> Key Influencers)
+  - Find what "influences" a Rating to be High or a Delivery to be Delayed.
+- **Smart Narrative**: (Visuals pane -> Smart Narrative)
+  - Automatically generates a text summary of the trends on your page.
+

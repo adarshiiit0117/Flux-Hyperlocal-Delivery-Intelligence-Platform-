@@ -49,13 +49,18 @@ p_top <- ggplot(head(word_counts, 20), aes(x = reorder(word, n), y = n)) +
 
 ggsave(filename = file.path("visuals", "top_words_reviews.png"), plot = p_top, width = 6, height = 4)
 
-tokens_sentiment <- tokens %>%
-  inner_join(get_sentiments("bing"), by = "word")
+# Calculate sentiment score per review
+review_sentiments <- tokens %>%
+  inner_join(get_sentiments("bing"), by = "word") %>%
+  mutate(sentiment_value = if_else(sentiment == "positive", 1, -1)) %>%
+  group_by(review_id) %>%
+  summarise(sentiment_score = sum(sentiment_value))
 
-sent_summary <- tokens_sentiment %>%
-  count(sentiment)
+# Join back to original reviews to see score alongside text
+final_reviews_with_sentiment <- reviews %>%
+  left_join(review_sentiments, by = "review_id") %>%
+  mutate(sentiment_score = replace_na(sentiment_score, 0))
 
-write_csv(sent_summary, file.path("data", "review_sentiment_summary.csv"))
+write_csv(final_reviews_with_sentiment, file.path("data", "reviews_with_sentiment_scores.csv"))
 
-message("Text mining outputs saved: visuals/top_words_reviews.png and data/review_sentiment_summary.csv")
-
+message("Enhanced sentiment analysis saved to data/reviews_with_sentiment_scores.csv")
