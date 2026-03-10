@@ -26,7 +26,15 @@ ui <- dashboardPage(
     selectInput("city_filter", "Select City:", choices = NULL, multiple = TRUE),
     dateRangeInput("date_filter", "Date Range:", start = Sys.Date() - 30, end = Sys.Date()),
     hr(),
-    h4("OLAP Controls"),
+    h4("Slice & Pick (OLAP)"),
+    checkboxGroupInput("traffic_filter", "Slice by Traffic:", choices = NULL, inline = TRUE),
+    checkboxGroupInput("vehicle_filter", "Slice by Vehicle:", choices = NULL, inline = TRUE),
+    radioButtons("metric_pick", "Pick Main Metric:",
+      choices = c("Total Orders" = "orders", "Avg Delivery Time" = "time", "Avg Rating" = "rating"),
+      selected = "orders"
+    ),
+    hr(),
+    h4("Hierarchy Controls"),
     radioButtons("time_level", "Time Hierarchy (Roll-up):",
       choices = c("Daily" = "order_date", "Monthly" = "year_month", "Yearly" = "year"),
       selected = "order_date"
@@ -43,7 +51,7 @@ ui <- dashboardPage(
         tabName = "overview",
         fluidRow(
           valueBoxOutput("total_orders"),
-          valueBoxOutput("avg_rating"),
+          valueBoxOutput("picked_metric_box"),
           valueBoxOutput("delay_rate")
         ),
         fluidRow(
@@ -137,6 +145,8 @@ server <- function(input, output, session) {
 
   # Update UI filters
   updateSelectInput(session, "city_filter", choices = unique(deliveries$city), selected = unique(deliveries$city))
+  updateCheckboxGroupInput(session, "traffic_filter", choices = unique(deliveries$traffic_level), selected = unique(deliveries$traffic_level))
+  updateCheckboxGroupInput(session, "vehicle_filter", choices = unique(deliveries$vehicle_type), selected = unique(deliveries$vehicle_type))
 
   # Dynamic Titles to confirm level changes
   output$timeline_title <- renderText({
@@ -154,9 +164,14 @@ server <- function(input, output, session) {
 
   # Reactive filtered data
   filtered_deliveries <- reactive({
-    deliveries %>%
+    data <- deliveries
+
+    if (!is.null(input$city_filter)) data <- data %>% filter(city %in% input$city_filter)
+    if (!is.null(input$traffic_filter)) data <- data %>% filter(traffic_level %in% input$traffic_filter)
+    if (!is.null(input$vehicle_filter)) data <- data %>% filter(vehicle_type %in% input$vehicle_filter)
+
+    data %>%
       filter(
-        city %in% input$city_filter,
         order_date >= input$date_filter[1],
         order_date <= input$date_filter[2]
       )
@@ -176,9 +191,16 @@ server <- function(input, output, session) {
     valueBox(nrow(filtered_deliveries()), "Total Deliveries", icon = icon("list"), color = "blue")
   })
 
-  output$avg_rating <- renderValueBox({
-    val <- round(mean(filtered_reviews()$rating, na.rm = TRUE), 1)
-    valueBox(val, "Avg Rating", icon = icon("star"), color = "yellow")
+  output$picked_metric_box <- renderValueBox({
+    if (input$metric_pick == "orders") {
+      valueBox(nrow(filtered_deliveries()), "Total Orders", icon = icon("shopping-cart"), color = "purple")
+    } else if (input$metric_pick == "time") {
+      val <- round(mean(filtered_deliveries()$delivery_time_min, na.rm = TRUE), 1)
+      valueBox(val, "Avg Delivery (min)", icon = icon("truck"), color = "green")
+    } else {
+      val <- round(mean(filtered_reviews()$rating, na.rm = TRUE), 1)
+      valueBox(val, "Avg Rating", icon = icon("star"), color = "yellow")
+    }
   })
 
   output$delay_rate <- renderValueBox({
@@ -188,17 +210,28 @@ server <- function(input, output, session) {
 
   # Plots
   output$timeline_plot <- renderPlotly({
-    # Robust Time Roll-up
-    df_timeline <- filtered_deliveries() %>%
-      group_by(time_unit = .data[[input$time_level]]) %>%
-      summarise(count = n(), .groups = "drop")
+    # Robust Time Roll-up with Picked Metric
+    df_timeline <- if (input$metric_pick == "rating") {
+      filtered_reviews() %>%
+        group_by(time_unit = .data[[input$time_level]]) %>%
+        summarise(metric_val = mean(rating, na.rm = TRUE), .groups = "drop")
+    } else if (input$metric_pick == "time") {
+      filtered_deliveries() %>%
+        group_by(time_unit = .data[[input$time_level]]) %>%
+        summarise(metric_val = mean(delivery_time_min, na.rm = TRUE), .groups = "drop")
+    } else {
+      filtered_deliveries() %>%
+        group_by(time_unit = .data[[input$time_level]]) %>%
+        summarise(metric_val = n(), .groups = "drop")
+    }
 
     p <- plot_ly(df_timeline,
-      x = ~time_unit, y = ~count, type = "scatter", mode = "lines+markers",
+      x = ~time_unit, y = ~metric_val, type = "scatter", mode = "lines+markers",
       line = list(color = "steelblue"), marker = list(color = "steelblue")
     ) %>%
       layout(
-        xaxis = list(title = "Time Period"), yaxis = list(title = "Orders"),
+        xaxis = list(title = "Time Period"),
+        yaxis = list(title = ifelse(input$metric_pick == "orders", "Count", "Value")),
         hovermode = "closest"
       )
     p
