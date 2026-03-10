@@ -6,6 +6,7 @@ library(RSQLite)
 library(plotly)
 library(DT)
 library(lubridate)
+library(arules)
 
 # Database connection
 db_path <- file.path("data", "hyperlocal_dw.sqlite")
@@ -18,6 +19,7 @@ ui <- dashboardPage(
       menuItem("Overview", tabName = "overview", icon = icon("dashboard")),
       menuItem("Delivery Analysis", tabName = "delivery", icon = icon("truck")),
       menuItem("Customer Sentiment", tabName = "reviews", icon = icon("comments")),
+      menuItem("Association Analysis", tabName = "association", icon = icon("project-diagram")),
       menuItem("Raw Data", tabName = "data", icon = icon("table"))
     ),
     hr(),
@@ -79,6 +81,26 @@ ui <- dashboardPage(
         fluidRow(
           box(title = "Recent Deliveries", DTOutput("delivery_table"), width = 12)
         )
+      ),
+
+      # Association Analysis Tab
+      tabItem(
+        tabName = "association",
+        fluidRow(
+          box(
+            title = "Association Rules (Apriori)",
+            footer = "Rules showing relationships between Accuracy, Availability, Discounts, and Ratings.",
+            DTOutput("association_table"),
+            width = 12
+          )
+        ),
+        fluidRow(
+          box(
+            title = "Rules Map (Support vs Confidence)",
+            plotlyOutput("association_plot"),
+            width = 12
+          )
+        )
       )
     )
   )
@@ -108,6 +130,10 @@ server <- function(input, output, session) {
     JOIN dim_city c ON r.city_id = c.city_id
     JOIN dim_agent a ON r.agent_key = a.agent_key
   ") %>% mutate(order_date = as.Date(order_date))
+
+  # Load Association Rules
+  assoc_rules_path <- file.path("data", "association_rules.rds")
+  assoc_rules <- if (file.exists(assoc_rules_path)) readRDS(assoc_rules_path) else NULL
 
   # Update UI filters
   updateSelectInput(session, "city_filter", choices = unique(deliveries$city), selected = unique(deliveries$city))
@@ -275,6 +301,47 @@ server <- function(input, output, session) {
     datatable(filtered_deliveries() %>% select(delivery_id, order_date, city, delivery_time_min, sla_min, traffic_level),
       options = list(pageLength = 10)
     )
+  })
+
+  output$association_table <- renderDT(
+    {
+      if (is.null(assoc_rules)) {
+        return(data.frame(Message = "Association rules data not found. Run association_rules.R first."))
+      }
+      as(assoc_rules, "data.frame") %>%
+        mutate(across(where(is.numeric), round, 4))
+    },
+    options = list(pageLength = 10, scrollX = TRUE)
+  )
+
+  output$association_plot <- renderPlotly({
+    if (is.null(assoc_rules) || length(assoc_rules) == 0) {
+      return(NULL)
+    }
+
+    df <- as(assoc_rules, "data.frame")
+
+    p <- plot_ly(
+      df,
+      x = ~support,
+      y = ~confidence,
+      size = ~lift,
+      color = ~lift,
+      colors = "YlGnBu",
+      text = ~rules,
+      type = "scatter",
+      mode = "markers",
+      marker = list(opacity = 0.7, sizemode = "diameter")
+    ) %>%
+      layout(
+        xaxis = list(title = "Support"),
+        yaxis = list(title = "Confidence"),
+        showlegend = FALSE,
+        hovermode = "closest",
+        margin = list(t = 50)
+      )
+
+    p
   })
 }
 

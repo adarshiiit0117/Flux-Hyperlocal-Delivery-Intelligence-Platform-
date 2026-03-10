@@ -26,7 +26,11 @@ if (nrow(rules_df) == 0) {
   stop("No review data available for association rules.")
 }
 
-trans_list <- as(split(rules_df, seq_len(nrow(rules_df))), "transactions")
+# Convert all columns to factors for transactions
+rules_df <- rules_df %>% mutate(across(everything(), as.factor))
+
+# Create transactions directly from data frame
+trans_list <- as(rules_df, "transactions")
 
 rules <- apriori(
   trans_list,
@@ -40,4 +44,3 @@ inspect(head(rules_sorted, 20))
 saveRDS(rules_sorted, file = file.path("data", "association_rules.rds"))
 
 message("Top association rules saved to data/association_rules.rds")
-
