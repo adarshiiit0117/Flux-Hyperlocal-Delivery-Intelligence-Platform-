@@ -27,7 +27,7 @@ if (nrow(rules_df) == 0) {
 }
 
 # Convert all columns to factors for transactions
-rules_df <- rules_df %>% mutate(across(everything(), as.factor))
+rules_df <- as.data.frame(rules_df %>% mutate(across(everything(), as.factor)))
 
 # Create transactions directly from data frame
 trans_list <- as(rules_df, "transactions")

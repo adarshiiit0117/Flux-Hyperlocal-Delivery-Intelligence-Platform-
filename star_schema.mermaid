@@ -1,0 +1,60 @@
+erDiagram
+    %% Dimension Tables
+    dim_time {
+        int time_id PK
+        int year
+        int month
+        int day
+        string year_month
+        string weekday
+    }
+
+    dim_city {
+        int city_id PK
+        string city
+    }
+
+    dim_agent {
+        int agent_key PK
+        int agent_id
+        string agent_name
+    }
+
+    %% Fact Tables
+    fact_delivery {
+        int delivery_id PK
+        int time_id FK
+        int city_id FK
+        int agent_id FK
+        float distance_km
+        float delivery_time_min
+        int sla_min
+        int delayed_flag
+        string traffic_level
+        string weather
+        string vehicle_type
+        boolean is_festival
+    }
+
+    fact_review {
+        int review_id PK
+        int time_id FK
+        int city_id FK
+        int agent_key FK
+        int rating
+        boolean order_accuracy
+        boolean product_availability
+        boolean discount_applied
+        string price_range
+        string review_text
+    }
+
+    %% Relationships
+    dim_time ||--o{ fact_delivery : "time_id"
+    dim_time ||--o{ fact_review : "time_id"
+    
+    dim_city ||--o{ fact_delivery : "city_id"
+    dim_city ||--o{ fact_review : "city_id"
+    
+    dim_agent ||--o{ fact_delivery : "agent_id"
+    dim_agent ||--o{ fact_review : "agent_key"
