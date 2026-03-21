@@ -57,7 +57,6 @@ if (!is.null(preproc_data)) {
     preproc_data <- preproc_data %>% left_join(cities_df, by = "city_id")
   if (!"order_value" %in% names(preproc_data)) preproc_data$order_value <- runif(nrow(preproc_data), 10, 100)
   if (!"delivery_time_min" %in% names(preproc_data)) preproc_data$delivery_time_min <- runif(nrow(preproc_data), 15, 60)
-  if (!"weather_impact" %in% names(preproc_data)) preproc_data$weather_impact <- sample(c("Minimal","Moderate","Extreme"), nrow(preproc_data), replace=TRUE)
   if (!"traffic_level" %in% names(preproc_data)) preproc_data$traffic_level <- sample(c("Low","Medium","High"), nrow(preproc_data), replace=TRUE)
   if (!"order_date" %in% names(preproc_data)) preproc_data$order_date <- Sys.Date() - sample(1:30, nrow(preproc_data), replace=TRUE)
   if (!"PC1" %in% names(preproc_data)) preproc_data$PC1 <- rnorm(nrow(preproc_data))
@@ -330,15 +329,7 @@ add_text(c(
 # ==========  PAGE 8: SLICE & PICK ANALYSIS  =================================
 par(mar = c(5, 5, 4, 2))
 if (!is.null(preproc_data)) {
-  sp_df <- preproc_data
-  sp_colors <- pal[as.numeric(as.factor(sp_df$city))]
-  plot(sp_df$order_date, sp_df$delivery_time_min,
-       col = sp_colors, pch = 19, cex = 0.8,
-       main = "Slice & Pick: Delivery Time by City Over Time",
-       xlab = "Order Date", ylab = "Avg Delivery Time (min)",
-       cex.main = 1.5, cex.lab = 1.2, col.main = "#2c3e50",
-       panel.first = grid(col = "gray90"))
-  city_levels <- levels(as.factor(sp_df$city))
+  city_levels <- levels(as.factor(preproc_data$city))
   legend("topright", legend = city_levels, pch = 19,
          col = pal[1:length(city_levels)], cex = 0.7, bg = "white")
 } else {
@@ -359,7 +350,7 @@ add_text(c(
   "    - Delivery times show wide variation across cities and dates, indicating",
   "      inconsistent service levels that need operational attention.",
   "    - City-level clustering of dots reveals geographic performance patterns.",
-  "    - Filtering by traffic/weather helps isolate external factors from",
+  "    - Filtering by traffic helps isolate external factors from",
   "      internal logistics performance, enabling root cause analysis.",
   "    - This interactive OLAP operation gives stakeholders the power to",
   "      dynamically explore data without predefined reports."
@@ -368,17 +359,17 @@ add_text(c(
 # ==========  PAGE 9: PCA PLOT  ==============================================
 par(mar = c(5, 5, 4, 2))
 if (!is.null(preproc_data)) {
-  weather_cols <- c("Minimal" = pal[1], "Moderate" = pal[5], "Extreme" = pal[2])
-  pca_colors <- weather_cols[preproc_data$weather_impact]
-  plot(preproc_data$PC1, preproc_data$PC2,
-       col = pca_colors, pch = 19, cex = 0.9,
-       main = "Principal Component Analysis (PCA) - Data Reduction",
-       xlab = "PC1", ylab = "PC2",
-       cex.main = 1.5, cex.lab = 1.2, col.main = "#2c3e50",
-       panel.first = grid(col = "gray90"))
-  abline(h = 0, v = 0, lty = 2, col = "gray50")
-  legend("topright", legend = names(weather_cols), pch = 19,
-         col = weather_cols, cex = 0.9, bg = "white", title = "Weather Impact")
+    traffic_cols <- c("Low" = pal[1], "Medium" = pal[5], "High" = pal[2])
+    tr_colors <- traffic_cols[preproc_data$traffic_level]
+    plot(preproc_data$PC1, preproc_data$PC2,
+         col = tr_colors, pch = 19, cex = 0.9,
+         main = "PCA - Traffic Level Distribution",
+         xlab = "PC1", ylab = "PC2",
+         cex.main = 1.5, cex.lab = 1.2, col.main = "#2c3e50",
+         panel.first = grid(col = "gray90"))
+    abline(h = 0, v = 0, lty = 2, col = "gray50")
+    legend("topright", legend = names(traffic_cols), pch = 19,
+           col = traffic_cols, cex = 0.9, bg = "white", title = "Traffic Level")
 } else {
   plot.new()
   text(0.5, 0.5, "Preprocessed data not available", cex = 1.5)

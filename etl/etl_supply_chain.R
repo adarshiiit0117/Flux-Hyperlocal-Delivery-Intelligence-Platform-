@@ -57,7 +57,7 @@ supply_clean <- supply_raw %>%
       delivery_time_min <= quantile(delivery_time_min, 0.66, na.rm = TRUE) ~ "Medium",
       TRUE ~ "High"
     ),
-    weather = "Clear",
+    weather = sample(c("Clear", "Rainy", "Stormy"), n(), replace = TRUE),
     vehicle_type = if ("Transportation modes" %in% names(supply_raw)) {
       as.character(`Transportation modes`)
     } else {

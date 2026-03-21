@@ -57,7 +57,6 @@ if (!is.null(preproc_data)) {
     preproc_data <- preproc_data %>% left_join(cities_df, by = "city_id")
   if (!"order_value" %in% names(preproc_data)) preproc_data$order_value <- runif(nrow(preproc_data), 10, 100)
   if (!"delivery_time_min" %in% names(preproc_data)) preproc_data$delivery_time_min <- runif(nrow(preproc_data), 15, 60)
-  if (!"weather_impact" %in% names(preproc_data)) preproc_data$weather_impact <- sample(c("Minimal","Moderate","Extreme"), nrow(preproc_data), replace=TRUE)
   if (!"traffic_level" %in% names(preproc_data)) preproc_data$traffic_level <- sample(c("Low","Medium","High"), nrow(preproc_data), replace=TRUE)
   if (!"order_date" %in% names(preproc_data)) preproc_data$order_date <- Sys.Date() - sample(1:30, nrow(preproc_data), replace=TRUE)
   if (!"PC1" %in% names(preproc_data)) preproc_data$PC1 <- rnorm(nrow(preproc_data))
@@ -179,13 +178,13 @@ img4 <- save_plot("multidim_scatter.png", function() {
 img5 <- save_plot("pca_plot.png", function() {
   par(mar = c(5,5,3,2))
   if (!is.null(preproc_data)) {
-    wcols <- c("Minimal" = accent1, "Moderate" = accent4, "Extreme" = accent3)
+    tr_cols <- c("Low" = accent1, "Medium" = accent4, "High" = accent3)
     plot(preproc_data$PC1, preproc_data$PC2,
-         col = wcols[preproc_data$weather_impact], pch = 19, cex = 0.9,
-         main = "PCA: Data Reduction (Weather Impact)", xlab = "PC1", ylab = "PC2",
+         col = tr_cols[preproc_data$traffic_level], pch = 19, cex = 0.9,
+         main = "PCA: Data Reduction (Traffic Level Impact)", xlab = "PC1", ylab = "PC2",
          cex.main = 1.5, col.main = text_dark, panel.first = grid(col = "gray90"))
     abline(h = 0, v = 0, lty = 2, col = "gray60")
-    legend("topright", legend = names(wcols), pch = 19, col = wcols, bg = "white", title = "Weather")
+    legend("topright", legend = names(tr_cols), pch = 19, col = tr_cols, bg = "white", title = "Traffic")
   }
 })
 
@@ -529,8 +528,7 @@ pptx <- add_dark_slide(pptx,
   c(
     "Scatter: Distance vs Delivery Time, colored by delay status",
     "Positive correlation exists, but delays occur even at short distances",
-    "INFERENCE: Factors OTHER than distance (traffic, weather) are key delay drivers",
-    "Slice & Pick enables dynamic filtering by traffic level and weather impact"
+    "Slice & Pick enables dynamic filtering by traffic level."
   ),
   img_path = img4
 )
@@ -542,7 +540,7 @@ pptx <- add_dark_slide(pptx,
   "\U0001F9F9  Data Preprocessing: PCA & Discretization",
   c(
     "PCA reduces multi-dimensional features into 2 interpretable components",
-    "Weather categories overlap in PCA space - not clearly separable alone",
+    "PCA reveals how traffic density and distance cluster in the feature space",
     "INFERENCE: Dimensionality reduction is essential before clustering/classification",
     "Discretization: High Value (47%) | Medium Value (32%) | Low Value (21%)"
   ),

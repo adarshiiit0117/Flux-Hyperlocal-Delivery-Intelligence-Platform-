@@ -12,9 +12,9 @@ df_clean <- readRDS(data_path)
 
 # Prepare data for classification
 # Target: customer_complaint
-# Features: PC1, PC2, order_segment, traffic_level, weather_impact
+# Features: PC1, PC2, order_segment, traffic_level
 df_ml <- df_clean %>%
-    select(customer_complaint, PC1, PC2, order_segment, traffic_level, weather_impact) %>%
+    select(customer_complaint, PC1, PC2, order_segment, traffic_level) %>%
     mutate(customer_complaint = factor(customer_complaint, levels = c(0, 1), labels = c("No_Complaint", "Complaint")))
 
 # Split data

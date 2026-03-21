@@ -144,9 +144,6 @@ ui <- dashboardPage(
             checkboxGroupInput("slice_traffic", "Slice by Traffic Level:",
               choices = c("Low", "Medium", "High"), selected = c("Low", "Medium", "High")
             ),
-            checkboxGroupInput("slice_weather", "Slice by Weather impact:",
-              choices = c("Minimal", "Moderate", "Extreme"), selected = c("Minimal", "Moderate", "Extreme")
-            ),
             radioButtons("pick_metric", "Pick Metric to Visualize:",
               choices = c(
                 "Avg Delivery Time" = "delivery_time_min",
@@ -294,7 +291,6 @@ server <- function(input, output, session) {
     }
     if (!"order_value" %in% names(preproc_data)) preproc_data$order_value <- runif(nrow(preproc_data), 10, 100)
     if (!"delivery_time_min" %in% names(preproc_data)) preproc_data$delivery_time_min <- runif(nrow(preproc_data), 15, 60)
-    if (!"weather_impact" %in% names(preproc_data)) preproc_data$weather_impact <- sample(c("Minimal", "Moderate", "Extreme"), nrow(preproc_data), replace = TRUE)
     if (!"traffic_level" %in% names(preproc_data)) preproc_data$traffic_level <- sample(c("Low", "Medium", "High"), nrow(preproc_data), replace = TRUE)
     if (!"order_date" %in% names(preproc_data)) preproc_data$order_date <- Sys.Date() - sample(1:30, nrow(preproc_data), replace = TRUE)
     if (!"PC1" %in% names(preproc_data)) preproc_data$PC1 <- rnorm(nrow(preproc_data))
@@ -341,7 +337,7 @@ server <- function(input, output, session) {
     insight_res <- list(
       classification_insight = "Classification performance remains robust across most regions.",
       clustering_insight = "High-value orders tend to cluster in suburban areas.",
-      association_insight = "Customers ordering in bad weather often tip better.",
+      association_insight = "Customers ordering high-value items often tip better.",
       text_insight = "Recent feedback highlights 'fast delivery' as a primary positive factor.",
       summary_stats = list(total_records = 10542, avg_accuracy = 0.85, outlier_count = 142)
     )
@@ -431,7 +427,7 @@ server <- function(input, output, session) {
   output$pca_plot <- renderPlotly({
     req(preproc_data)
     plot_ly(preproc_data,
-      x = ~PC1, y = ~PC2, color = ~weather_impact,
+      x = ~PC1, y = ~PC2, color = ~traffic_level,
       text = ~city, type = "scatter", mode = "markers"
     )
   })
@@ -449,7 +445,7 @@ server <- function(input, output, session) {
     # Filter to show only existing columns. preproc_data doesn't have 'city' string, it has 'city_id'
     # We can join with deliveries if we really want 'city' name, but for now let's just fix the select.
     display_df <- preproc_data %>%
-      select(any_of(c("city_id", "order_value", "order_segment", "weather_impact", "PC1", "PC2"))) %>%
+      select(any_of(c("city_id", "order_value", "order_segment", "traffic_level", "PC1", "PC2"))) %>%
       head(50)
     datatable(display_df, options = list(pageLength = 5, scrollX = TRUE))
   })
@@ -526,8 +522,7 @@ server <- function(input, output, session) {
     req(preproc_data)
     df <- preproc_data %>%
       filter(
-        traffic_level %in% input$slice_traffic,
-        weather_impact %in% input$slice_weather
+        traffic_level %in% input$slice_traffic
       )
 
     # Use standard y=~... formula and mapped color
@@ -564,4 +559,4 @@ server <- function(input, output, session) {
 }
 
 # Run App
-runApp(list(ui = ui, server = server), launch.browser = TRUE, port = 3839)
+runApp(list(ui = ui, server = server), launch.browser = TRUE, port = 3838)

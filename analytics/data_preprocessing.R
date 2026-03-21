@@ -38,11 +38,6 @@ df_clean <- df_clean %>%
         order_segment = cut(order_value,
             breaks = c(-Inf, 25, 60, Inf),
             labels = c("Low Value", "Medium Value", "High Value")
-        ),
-        # Concept Hierarchy: Hierarchical categorization of weather severity
-        weather_impact = cut(weather_severity,
-            breaks = c(-Inf, 3, 7, Inf),
-            labels = c("Minimal", "Moderate", "Extreme")
         )
     )
 
