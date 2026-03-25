@@ -339,7 +339,7 @@ server <- function(input, output, session) {
       clustering_insight = "High-value orders tend to cluster in suburban areas.",
       association_insight = "Customers ordering high-value items often tip better.",
       text_insight = "Recent feedback highlights 'fast delivery' as a primary positive factor.",
-      summary_stats = list(total_records = 10542, avg_accuracy = 0.85, outlier_count = 142)
+      summary_stats = list(total_records = 10000, avg_accuracy = 0.85, outlier_count = 142)
     )
   }
 
