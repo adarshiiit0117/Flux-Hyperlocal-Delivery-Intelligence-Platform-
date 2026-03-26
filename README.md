@@ -1,74 +1,113 @@
 # Flux Hyperlocal Delivery Intelligence Platform
 
 ## Team Members
-StudentName1 – RollNumber1  
-StudentName2 – RollNumber2  
-StudentName3 – RollNumber3  
-StudentName4 – RollNumber4  
+StudentName1 - RollNumber1  
+StudentName2 - RollNumber2  
+StudentName3 - RollNumber3  
+StudentName4 - RollNumber4
 
 ## Problem Statement
-Hyperlocal delivery operations often suffer from unpredictable delays, volatile service quality, and inefficient agent routing. Analyzing the complex delivery lifecycle and customer sentiment requires robust data mining to identify operational bottlenecks and improve platform efficiency.
+Hyperlocal delivery systems face frequent delays, varying service quality, and inefficient resource usage. This project applies data mining to identify delay drivers, segment delivery behavior, and extract customer sentiment insights for better operational decisions.
 
 ## Objectives
-1. Profile order flow and predict delivery delays using classification models.
-2. Segment delivery zones and agent performance through clustering analysis.
-3. Discover frequent itemsets and associations between delivery attributes to uncover patterns.
-4. Extrapolate customer sentiment from text reviews and mine external trends for holistic intelligence.
+1. Prepare and clean delivery, agent, and review datasets for analysis.
+2. Perform exploratory analysis to identify trends by city, traffic, and delivery performance.
+3. Build predictive models for delivery delay classification.
+4. Segment records using clustering and discover frequent patterns using association rules.
+5. Analyze customer review text using text mining and sentiment-oriented summaries.
+6. Deliver findings through visualizations, result tables, and a Shiny dashboard.
 
 ## Dataset
-- **Source of the dataset**: Internal operational database (Simulated/ETL constructed)
-- **Number of observations**: ~10,000 deliveries
-- **Number of variables**: ~30 features
-- **Brief description of important attributes**: `delivery_time_min`, `traffic_level`, `delayed_flag`, `order_value`, `agent_rating`, `review_text`, `distance_km`.
+- Source of the dataset: Internal simulated hyperlocal delivery platform data (stored in the data folder as CSV and RDS files).
+- Number of observations: Approximately 10,000 records across prepared delivery and review datasets.
+- Number of variables: Approximately 30 variables across operational, agent, and sentiment-related fields.
+- Brief description of important attributes:
+	- delivery_time_min: Total delivery duration in minutes.
+	- traffic_level: Traffic condition category during delivery.
+	- delayed_flag: Delay indicator for delivery completion.
+	- order_value: Monetary value of the customer order.
+	- distance_km: Delivery distance in kilometers.
+	- rating: Customer review rating score.
+	- review_text: Customer textual feedback used for text mining.
 
 ## Methodology
-- **Data preprocessing**: Handled missing values, normalized numerical features, discretized categories, and applied PCA for dimensionality reduction. Built an OLAP cube.
-- **Exploratory analysis**: Sliced and diced data by city, agent, and traffic level to identify macro trends.
-- **Models used**: Decision Trees, SVM, Random Forest (Classification); K-Means, Hierarchical (Clustering); Apriori (Association Rules); TF-IDF (Text Mining).
-- **Evaluation methods**: Accuracy, Precision, Recall, F1 for classifiers; Silhouette score for clusters; Support/Confidence metrics for association rules.
+- Data preprocessing: Missing-value handling, type conversion, data cleaning, feature engineering, and ETL-based integration.
+- Exploratory analysis: Univariate and multivariate analysis, trend analysis by city and traffic, and delay distribution analysis.
+- Models used: Decision Tree, Random Forest, and SVM for classification; K-Means for clustering; Apriori for association rules; term-frequency and TF-IDF methods for review mining.
+- Evaluation methods: Accuracy, Precision, Recall, and F1-score for predictive models, plus support, confidence, and lift for association rules.
 
 ## Results
-- **Classification**: Decision Tree models achieved ~82% accuracy, Random Forest ~89%, SVM ~85% in predicting delivery delays.
-- **Clustering**: K-Means distinctively partitioned high-value orders in suburban clusters vs low-value, rapid urban deliveries.
-- **Text Mining**: Top terms associated with high ratings include "fast" and "polite," while delays corelate strictly with negative sentiment tokens.
+- Random Forest achieved the strongest classification performance among tested models.
+- SVM and Decision Tree also delivered stable and interpretable results for delay prediction.
+- Clustering exposed meaningful operational segments for agent and delivery behavior.
+- Association rule mining identified pattern combinations linked with delays and service quality.
+- Text mining surfaced recurring positive and negative customer experience terms.
+
+Model performance summary (stored in results/tables/model_performance.csv):
+
+| Model | Accuracy | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| Random Forest | 0.89 | 0.90 | 0.87 | 0.88 |
+| SVM | 0.85 | 0.86 | 0.84 | 0.85 |
+| Decision Tree | 0.82 | 0.83 | 0.81 | 0.82 |
 
 ## Key Visualizations
-*(Insert important plots here from `results/figures/`)*
-- `star_schema.png`
-- `pca_plot.png`
-- `dt_tree_plot.png`
+Important plots from results/figures:
+
+![Agent Clusters](results/figures/agent_clusters.png)
+
+![Average Delivery by City and Traffic](results/figures/avg_delivery_by_city_traffic.png)
+
+![Delay Rate by City and Month](results/figures/delay_rate_by_city_month.png)
+
+![Top Review Terms](results/figures/top_words_reviews.png)
 
 ## How to Run the Project
-1. Install all prerequisites using `Rscript requirements.R`.
-2. Ensure you are in the project root directory.
-3. (Optional) Run the ETL and preparation scripts located in `scripts/`:
-   ```r
-   source("scripts/01_data_preparation.R")
-   source("scripts/02_exploratory_analysis.R")
-   source("scripts/03_modeling.R")
-   source("scripts/04_clustering_analysis.R")
-   ```
-4. Run the interactive presentation dashboard:
-   ```r
-   shiny::runApp("app/dashboard.R")
-   ```
-### Folder Organization
-- `app/`: Dashboard code and static assets (`www/`).
-- `data/`: Datasets and generated `.rds` files.
-- `scripts/`: R scripts for Data Mining pipelines (1 to 9).
-- `results/`: Output figures and table metrics saved from evaluation.
-- `presentation/`: Final presentation slides.
+1. Open R/RStudio in the repository root.
+2. Install required packages:
+
+```r
+source("requirements.R")
+```
+
+3. Run scripts in sequence:
+
+```r
+source("scripts/01_data_preparation.R")
+source("scripts/02_exploratory_analysis.R")
+source("scripts/03_modeling.R")
+source("scripts/04_clustering_analysis.R")
+source("scripts/05_association_rules.R")
+source("scripts/06_text_mining_reviews.R")
+source("scripts/07_web_mining.R")
+source("scripts/08_etl_agent_reviews.R")
+source("scripts/09_data_augmentation.R")
+```
+
+4. Launch dashboard:
+
+```r
+shiny::runApp("app")
+```
+
+Folder organization:
+- data/: Raw and processed datasets, plus dataset description.
+- scripts/: Sequential analysis and modeling scripts.
+- app/: Shiny application files.
+- results/figures/: Exported plots and visual outputs.
+- results/tables/: Model evaluation and summary tables.
+- presentation/: Final presentation slides.
 
 ## Conclusion
-The data mining pipeline successfully extracts actionable insights from standard delivery data. The models highly predict service bottlenecks, and interactive dashboards allow seamless dissemination of this intelligence across the hypothetical organization.
+The project demonstrates a complete data mining workflow for hyperlocal delivery analytics, from ETL and modeling to visualization and dashboard reporting. The resulting insights can support operational planning, delay reduction, and service-quality improvement.
 
 ## Contribution
-001 | Data preprocessing, ETL setup, initial visualization EDA |
-002 | Classification Model developent, evaluation, hyperparameter tuning |
-003 | Clustering, Association Rules, Text/Web Mining |
-004 | Application dashboard development, model integration, report writing |
+001 | Data preprocessing, initial visualization EDA |
+002 | Model-1 development, evaluation, hyperparameter tuning |
+003 | Visualization, report writing |
+004 | Model-2 development, app development, model integration |
 
 ## References
-- Witten, I. H., Frank, E., & Hall, M. A. (2011). Data Mining: Practical Machine Learning Tools and Techniques.
-- R Core Team (2021). R: A language and environment for statistical computing.
-- Packages: `shiny`, `plotly`, `caret`, `e1071`, `arules`.
+- Witten, I. H., Frank, E., and Hall, M. A. Data Mining: Practical Machine Learning Tools and Techniques.
+- R Core Team. R: A Language and Environment for Statistical Computing.
+- Relevant R packages: tidyverse, caret, randomForest, e1071, cluster, arules, tm, ggplot2, shiny.
