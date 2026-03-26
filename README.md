@@ -1,10 +1,10 @@
 # Flux Hyperlocal Delivery Intelligence Platform
 
 ## Team Members
-StudentName1 - RollNumber1  
-StudentName2 - RollNumber2  
-StudentName3 - RollNumber3  
-StudentName4 - RollNumber4
+Adarsh Dubey - 2023bcs0117  
+mohhammed siraj - 2023bcs0132  
+Roshan binoj - 2023bcs0009
+Hafiz Firoz-2923bcs0006
 
 ## Problem Statement
 Hyperlocal delivery systems face frequent delays, varying service quality, and inefficient resource usage. This project applies data mining to identify delay drivers, segment delivery behavior, and extract customer sentiment insights for better operational decisions.
@@ -61,6 +61,7 @@ Important plots from results/figures:
 ![Delay Rate by City and Month](results/figures/delay_rate_by_city_month.png)
 
 ![Top Review Terms](results/figures/top_words_reviews.png)
+
 
 ## How to Run the Project
 1. Open R/RStudio in the repository root.
