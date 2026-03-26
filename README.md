@@ -137,6 +137,6 @@ The project demonstrates a complete data mining workflow for hyperlocal delivery
    https://en.wikipedia.org/wiki/K-means_clustering
 10. UCI Machine Learning Repository (Dataset inspiration)  
     https://archive.ics.uci.edu/
-11. Project Report: *Flux Hyperlocal Delivery Intelligence Platform* :contentReference[oaicite:1]{index=1}
+
 
 
