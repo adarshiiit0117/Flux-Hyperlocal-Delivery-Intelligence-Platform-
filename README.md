@@ -110,13 +110,3 @@ Folder organization:
 ## Conclusion
 The project demonstrates a complete data mining workflow for hyperlocal delivery analytics, from ETL and modeling to visualization and dashboard reporting. The resulting insights can support operational planning, delay reduction, and service-quality improvement.
 
-## Contribution
-001 | Data preprocessing, initial visualization EDA |
-002 | Model-1 development, evaluation, hyperparameter tuning |
-003 | Visualization, report writing |
-004 | Model-2 development, app development, model integration |
-
-## References
-- Witten, I. H., Frank, E., and Hall, M. A. Data Mining: Practical Machine Learning Tools and Techniques.
-- R Core Team. R: A Language and Environment for Statistical Computing.
-- Relevant R packages: tidyverse, caret, randomForest, e1071, cluster, arules, tm, ggplot2, shiny.
