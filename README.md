@@ -2,10 +2,10 @@
 
 ## Team Members
 Adarsh Dubey - 2023bcs0117  
-mohhammed siraj - 2023bcs0132  
-Roshan binoj - 2023bcs0009
+Mohammed Sirajudheen - 2023bcs0132  
+Roshan Binoj - 2023bcs0009
 
-Hafiz Firoz-2923bcs0006
+Hafiz Firoz-2023bcs0006
 
 ## Problem Statement
 Hyperlocal delivery systems face frequent delays, varying service quality, and inefficient resource usage. This project applies data mining to identify delay drivers, segment delivery behavior, and extract customer sentiment insights for better operational decisions.
@@ -62,8 +62,34 @@ Important plots from results/figures:
 ![Delay Rate by City and Month](results/figures/delay_rate_by_city_month.png)
 
 ![Top Review Terms](results/figures/top_words_reviews.png)
-<img width="1336" height="934" alt="image" src="https://github.com/user-attachments/assets/0b202f4a-3ef3-4e17-8a0b-aec693a98d0b" />
-<img width="1061" height="1028" alt="image" src="https://github.com/user-attachments/assets/00f62c5f-8bdb-4704-9ea9-eef90112d92b" />
+
+![Daily Order Volume](results/figures/Daily_order_volume.png)
+
+![Model Performance Comparison](results/figures/Model_performance_comparison.png)
+
+![SVM Distribution](results/figures/SVM_distribution.png)
+
+![K-Means Clustering](results/figures/K_mean.png)
+
+![PCA Reduction](results/figures/PCA_reduction.png)
+
+![Multi-dimensional Analysis](results/figures/Multi-dimensional_analysis.png)
+
+![Outlier Analysis](results/figures/Outlier_analysis.png)
+
+![Association Rules](results/figures/Association_Rules.png)
+
+![TF-IDF Analysis](results/figures/TRF_IDF.png)
+
+![Review Source Analysis](results/figures/Review_source.png)
+
+![Web Mining Insights](results/figures/web_mining.png)
+
+![OLAP Roll-up](results/figures/olap_roll_up.png)
+
+![Slice and Pick](results/figures/slice_and_pick.png)
+
+![Star Schema](app/www/star_schema.png)
 
 
 
