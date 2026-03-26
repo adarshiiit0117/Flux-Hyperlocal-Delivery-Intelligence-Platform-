@@ -109,4 +109,34 @@ Folder organization:
 
 ## Conclusion
 The project demonstrates a complete data mining workflow for hyperlocal delivery analytics, from ETL and modeling to visualization and dashboard reporting. The resulting insights can support operational planning, delay reduction, and service-quality improvement.
+## 👥 Contribution
+
+| Roll No | Work Done |
+|--------|----------|
+| 2023BCS0117 | Data preprocessing (PCA, discretization), EDA, initial visualization,Dashboard |
+| 2023BCS0132| OLAP analysis (roll-up, drill-down, slice & dice), data warehouse design (star schema) |
+| 2023BCS0009| Classification models (Decision Tree, Naive Bayes, SVM), model evaluation & comparison |
+| 2023BCS0006 | Clustering (K-Means), outlier detection, association rule mining (Apriori), report writing & visualization |
+## 📚 References
+
+1. Han, J., Kamber, M., & Pei, J. – *Data Mining: Concepts and Techniques*, Elsevier.
+2. Pang-Ning Tan, Michael Steinbach, Anuj Karpatne – *Introduction to Data Mining*.
+3. Scikit-learn Documentation  
+   https://scikit-learn.org/
+4. Pandas Documentation  
+   https://pandas.pydata.org/
+5. NumPy Documentation  
+   https://numpy.org/
+6. Matplotlib Documentation  
+   https://matplotlib.org/
+7. Apriori Algorithm – Association Rule Mining  
+   https://en.wikipedia.org/wiki/Apriori_algorithm
+8. PCA (Principal Component Analysis)  
+   https://en.wikipedia.org/wiki/Principal_component_analysis
+9. K-Means Clustering  
+   https://en.wikipedia.org/wiki/K-means_clustering
+10. UCI Machine Learning Repository (Dataset inspiration)  
+    https://archive.ics.uci.edu/
+11. Project Report: *Flux Hyperlocal Delivery Intelligence Platform* :contentReference[oaicite:1]{index=1}
+
 
