@@ -62,6 +62,13 @@ Important plots from results/figures:
 ![Delay Rate by City and Month](results/figures/delay_rate_by_city_month.png)
 
 ![Top Review Terms](results/figures/top_words_reviews.png)
+<img width="1336" height="934" alt="image" src="https://github.com/user-attachments/assets/0b202f4a-3ef3-4e17-8a0b-aec693a98d0b" />
+<img width="1061" height="1028" alt="image" src="https://github.com/user-attachments/assets/00f62c5f-8bdb-4704-9ea9-eef90112d92b" />
+
+
+
+
+
 
 
 ## How to Run the Project
