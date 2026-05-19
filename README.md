@@ -130,14 +130,6 @@ Folder organization:
 
 ## Conclusion
 The project demonstrates a complete data mining workflow for hyperlocal delivery analytics, from ETL and modeling to visualization and dashboard reporting. The resulting insights can support operational planning, delay reduction, and service-quality improvement.
-## 👥 Contribution
-
-| Roll No | Work Done |
-|--------|----------|
-| 2023BCS0117 | Data preprocessing (PCA, discretization), EDA, initial visualization,Dashboard |
-| 2023BCS0132| OLAP analysis (roll-up, drill-down, slice & dice), data warehouse design (star schema) |
-| 2023BCS0009| Classification models (Decision Tree, Naive Bayes, SVM), model evaluation & comparison |
-| 2023BCS0006 | Clustering (K-Means), outlier detection, association rule mining (Apriori), report writing & visualization |
 ## 📚 References
 
 1. Han, J., Kamber, M., & Pei, J. – *Data Mining: Concepts and Techniques*, Elsevier.
