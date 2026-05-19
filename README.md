@@ -1,11 +1,6 @@
 # Flux Hyperlocal Delivery Intelligence Platform
 
-## Team Members
-Adarsh Dubey - 2023bcs0117  
-Mohammed Sirajudheen - 2023bcs0132  
-Roshan Binoj - 2023bcs0009
 
-Hafiz Firoz-2023bcs0006
 
 ## Problem Statement
 Hyperlocal delivery systems face frequent delays, varying service quality, and inefficient resource usage. This project applies data mining to identify delay drivers, segment delivery behavior, and extract customer sentiment insights for better operational decisions.
